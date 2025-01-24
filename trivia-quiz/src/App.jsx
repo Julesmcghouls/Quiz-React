@@ -1,15 +1,18 @@
-import React, {useState} from "react";
+import React, { useEffect, useState } from "react";
+import { fetchTrivia } from "./api/fetchTrivia";
 
 function App() {
-  const [questions, setQuestions] = useState([]);
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [score, setScore] = useState(0);
+    const [questions, setQuestions] = useState([]);
 
-  return (
-    <div>
-      <h1>Trivia Quiz</h1>
-    </div>
-  );
+    useEffect(() => {
+        async function getQuestions() {
+            const data = await fetchTrivia();
+            setQuestions(data);
+        }
+        getQuestions();
+    }, []);
+
+    return <div>{questions.length > 0 ? "Questions loaded!" : "Loading..."}</div>;
 }
 
 export default App;
